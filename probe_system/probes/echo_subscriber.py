@@ -7,4 +7,4 @@ class EchoSubscriber(Subscriber):
         print(datapoint)
 
     def subscribes_to_streams(self):
-        return []
+        return [S_IS_ARMED]

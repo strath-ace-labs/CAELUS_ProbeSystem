@@ -25,7 +25,7 @@ Telemetry endpoints publish new data to all subscribers every time a new datapoi
 Probes are instances of the `Subscriber` abstract class (`helper_data/subscriber.py`).
 A probe is capable of receiving datapoints from any of the available endpoints.
 
-A minimal probe example can be found in the `echo_subscriber.py` file.
+A minimal probe example can be found in the `probe_system/probes/echo_subscriber.py` file.
 
 ## Writing a custom endpoint pipeline
 TBA
