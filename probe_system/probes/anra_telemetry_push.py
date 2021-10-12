@@ -4,6 +4,7 @@ from ..helper_data.streams import *
 class AnraTelemetrySerialiser():
     def __init__(self):
         self.attitude = (0,0,0)
+        
 
 class AnraTelemetryPush(Subscriber):
     
@@ -11,4 +12,4 @@ class AnraTelemetryPush(Subscriber):
         print(datapoint)
 
     def subscribes_to_streams(self):
-        return [S_ATTITUDE_EULER, S_POSITION]
+        return []

@@ -1,15 +1,16 @@
+
+import threading
 import asyncio
 from probe_system.probes.echo_subscriber import EchoSubscriber
 from probe_system.state_aggregator.state_aggregator import StateAggregator
 from probe_system.helper_data.subscriber import Subscriber
 
 def run(drone_instance_id, subscribers):
-    async def __run():
-        async with StateAggregator(drone_instance_id) as aggregator:
-            for stream_id, subscriber in subscribers:
-                aggregator.subscribe(stream_id, subscriber)
-            aggregator.report_subscribers()
-    return __run
+    aggregator = StateAggregator(drone_instance_id)
+    for stream_id, subscriber in subscribers:
+        aggregator.subscribe(stream_id, subscriber)
+    aggregator.report_subscribers()
+    aggregator.idle()
 
 def get_all_subscribers():
     from automatic_probe_import import import_all_probes
@@ -23,5 +24,5 @@ def get_all_subscribers():
 if __name__ == '__main__':
     drone_instance_id = 'test_drone'
     subscribers = get_all_subscribers()
-    asyncio.run(run(drone_instance_id, subscribers)())
+    run(drone_instance_id, subscribers)
 

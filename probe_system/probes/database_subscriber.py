@@ -38,11 +38,11 @@ class DatabaseSubscriber(Subscriber):
         state_dict = self.last_stream_data[drone_id]
         state_dict['timestamp'] = timestamp
 
-        if stream_id == S_IS_ARMED:
+        if stream_id == ARMED:
             state_dict['is_armed'] = data
-        elif stream_id == S_FLIGHT_MODE:
+        elif stream_id == VEHICLE_MODE:
             state_dict['flight_mode'] = data.name
-        elif stream_id == S_POSITION:
+        elif stream_id == GPS:
             state_dict['position'] = (
                 data.latitude_deg,
                 data.longitude_deg,
@@ -55,4 +55,4 @@ class DatabaseSubscriber(Subscriber):
         self.last_stream_data[stream_id] = self.process_datapoint(drone_id, stream_id, datapoint)
 
     def subscribes_to_streams(self):
-        return [S_IS_ARMED, S_FLIGHT_MODE, S_POSITION]
+        return []

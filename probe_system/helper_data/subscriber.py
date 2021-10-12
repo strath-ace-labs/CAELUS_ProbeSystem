@@ -8,3 +8,7 @@ class Subscriber(ABC):
     @abstractmethod
     def subscribes_to_streams(self):
         return []
+
+    def __repr__(self):
+        class_name = str(self.__class__).split('.')[-1][:-2]
+        return f'<{class_name}:{[s for s in self.subscribes_to_streams()]}>'

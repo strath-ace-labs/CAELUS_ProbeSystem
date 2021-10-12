@@ -7,4 +7,4 @@ class EchoSubscriber(Subscriber):
         print(datapoint)
 
     def subscribes_to_streams(self):
-        return [S_ATTITUDE_EULER, S_POSITION]
+        return [ATTITUDE, LOCAL_FRAME]

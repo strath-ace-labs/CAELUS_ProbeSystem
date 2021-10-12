@@ -17,26 +17,16 @@ class StateAggregator():
         self.subscribers: Dict[str, List[Subscriber]] = {}
 
         self.drone_instance_id = drone_instance_id
-        self.simulation_bridge = SimulationBridge(self)
-    
-    async def __aenter__(self):
+        self.should_shutdown = Condition()
+        self.simulation_bridge = SimulationBridge(self, self.should_shutdown)
         self.bridge_thread = self.__setup_bridge()
-        return self
-    
-    async def __aexit__(self, exc_type, exc, tb):
-        self.bridge_thread.join()
 
     def __setup_bridge(self):
-        def __setup(done_condition):
-            self.__asyncio_loop = asyncio.new_event_loop()            
-            self.__asyncio_loop.create_task(self.simulation_bridge.initialise(done_condition))
-            self.__asyncio_loop.run_forever()
-        
         # The bridge needs to acquire a connection with the drone
         # hence I'm setting up a lock to notify the connected state
         # and continue with the context initialisation 
         done_setting_up = Condition()
-        thread = Thread(target=__setup, args=(done_setting_up,))
+        thread = Thread(target=self.simulation_bridge.initialise, args=(done_setting_up,))
         thread.start()
 
         done_setting_up.acquire()
@@ -87,9 +77,14 @@ class StateAggregator():
 
     def report_subscribers(self):
         available_streams = self.simulation_bridge.get_available_streams()
+        print(self.subscribers)
         for stream_id, subs in self.subscribers.items():
             print(f'[STREAM] "{stream_id}" has {len(subs)} {"subscribers" if len(subs) > 1 else "subscriber"}')
             if stream_id not in available_streams:
                 print('[WARNING] This stream is not published by the state aggregator!')
             for sub in subs:
                 print(f'\t{sub}')
+
+    def idle(self):
+        self.should_shutdown.acquire()
+        self.should_shutdown.wait()
