@@ -16,7 +16,7 @@ class SimulationBridge():
         try:
             print(f'Initialising bridge...')
             self.system = mavsdk.System()
-            await self.system.connect()
+            await self.system.connect(system_address="udp://:14540")
         except Exception as e:
             print('Failed in initialising SimulationBridge')
             raise e

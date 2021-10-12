@@ -1,7 +1,11 @@
 from ..helper_data.subscriber import Subscriber
 from ..helper_data.streams import *
 
-class EchoSubscriber(Subscriber):
+class AnraTelemetrySerialiser():
+    def __init__(self):
+        self.attitude = (0,0,0)
+
+class AnraTelemetryPush(Subscriber):
     
     def new_datapoint(self, drone_id, stream_id, datapoint):
         print(datapoint)
