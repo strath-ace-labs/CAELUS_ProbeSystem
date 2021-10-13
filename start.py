@@ -1,9 +1,6 @@
-
-import threading
-import asyncio
-from probe_system.probes.echo_subscriber import EchoSubscriber
-from probe_system.state_aggregator.state_aggregator import StateAggregator
-from probe_system.helper_data.subscriber import Subscriber
+from ProbeSystem.probes.echo_subscriber import EchoSubscriber
+from ProbeSystem.state_aggregator.state_aggregator import StateAggregator
+from ProbeSystem.helper_data.subscriber import Subscriber
 
 def run(drone_instance_id, subscribers):
     aggregator = StateAggregator(drone_instance_id)
